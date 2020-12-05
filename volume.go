@@ -17,8 +17,9 @@ func (v VolumeStream) String() string {
 // UnmarshalJSON turns json into our enum type
 func (v *VolumeStream) UnmarshalJSON(data []byte) error {
 	for i, stream := range []string{"call", "system", "ring", "music", "alarm", "notification"} {
-		if string(data) == stream {
+		if toEnumStr(data) == stream {
 			*v = VolumeStream(i)
+			return nil
 		}
 	}
 	return fmt.Errorf("No value found for %s as VolumeStream", string(data))
@@ -44,7 +45,7 @@ type Volume struct {
 type termuxVolumeRes struct {
 	Stream    VolumeStream
 	Volume    uint8
-	MaxVolume uint8
+	MaxVolume uint8 `json:"max_volume"`
 }
 
 // VolumeInfo returns the devices volume streams
