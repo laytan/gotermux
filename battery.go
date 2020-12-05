@@ -16,8 +16,9 @@ func (b BatteryHealth) String() string {
 // UnmarshalJSON turns the json string into our enum
 func (b *BatteryHealth) UnmarshalJSON(data []byte) error {
 	for i, healthStatus := range []string{"unknown", "unspecified_failure", "good", "cold", "dead", "overheat", "over_voltage"} {
-		if string(data) == healthStatus {
+		if toEnumStr(data) == healthStatus {
 			*b = BatteryHealth(i)
+			return nil
 		}
 	}
 	return fmt.Errorf("No BatteryHealth value for %s", string(data))
@@ -44,8 +45,9 @@ func (b BatteryPlugged) String() string {
 // UnmarshalJSON turns the json into our enum type
 func (b *BatteryPlugged) UnmarshalJSON(data []byte) error {
 	for i, pluggedStatus := range []string{"unplugged", "plugged_ac", "plugged_usb", "plugged_wireless"} {
-		if string(data) == pluggedStatus {
+		if toEnumStr(data) == pluggedStatus {
 			*b = BatteryPlugged(i)
+			return nil
 		}
 	}
 	return fmt.Errorf("No BatteryPlugged value for %s", string(data))
@@ -69,8 +71,9 @@ func (b BatteryStatus) String() string {
 // UnmarshalJSON turns json into our enum type
 func (b *BatteryStatus) UnmarshalJSON(data []byte) error {
 	for i, batteryStatus := range []string{"unknown", "charging", "discharging", "full", "not_charging"} {
-		if string(data) == batteryStatus {
+		if toEnumStr(data) == batteryStatus {
 			*b = BatteryStatus(i)
+			return nil
 		}
 	}
 	return fmt.Errorf("No BatteryStatus value for %s", string(data))
