@@ -15,7 +15,7 @@ type NotificationAction string
 type NotificationPriority uint
 
 func (n NotificationPriority) String() string {
-	return []string{"default", "high", "max", "low", "min"}[n]
+	return []string{"default", "high", "low", "max", "min"}[n]
 }
 
 // Available notification priorities
@@ -119,7 +119,7 @@ func (o *NotificationOptions) String() string {
 					break
 				}
 
-				opts += fmt.Sprintf(" button%d %s button%d-action %s", i+1, text, i+1, action)
+				opts += fmt.Sprintf(" --button%d %s --button%d-action %s", i+1, text, i+1, action)
 			}
 		case "led":
 			for mk, mv := range v.(map[string]interface{}) {
@@ -138,8 +138,14 @@ func (o *NotificationOptions) String() string {
 				opts += fmt.Sprintf(",%d", uint(t.(float64)/1000000))
 			}
 			opts += " "
-		case "--priority", "--type":
-			opts += fmt.Sprintf(" %s %s", k, v)
+		case "--priority":
+			var prio NotificationPriority
+			json.Unmarshal([]byte(fmt.Sprintf("%v", v)), &prio)
+			opts += fmt.Sprintf(" %s %s", k, prio.String())
+		case "--type":
+			var t NotificationType
+			json.Unmarshal([]byte(fmt.Sprintf("%v", v)), &t)
+			opts += fmt.Sprintf(" %s %s", k, t.String())
 		default:
 			opts += fmt.Sprintf(" %s %v", k, v)
 		}
